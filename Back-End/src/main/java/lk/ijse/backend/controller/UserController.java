@@ -40,7 +40,11 @@ public class UserController {
                     AuthDTO authDTO = new AuthDTO();
                     authDTO.setEmail(userDTO.getEmail());
                     authDTO.setToken(token);
+
+//                    email sending
                     mailSendService.sendRegisteredEmail(userDTO.getUsername(), userDTO.getEmail(), "Registered Successfully!");
+
+
                     return ResponseEntity.status(HttpStatus.CREATED)
                             .body(new ResponseDTO(VarList.Created, "Success", authDTO));
                 }

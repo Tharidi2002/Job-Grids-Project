@@ -3,20 +3,19 @@ package lk.ijse.backend.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
-public class Categories implements Serializable {
+public class CompanyCategories implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
     private String name;
 
 
-    public Categories() {
+    public CompanyCategories() {
     }
 
-    public Categories(int categoryId, String name) {
+    public CompanyCategories(int categoryId, String name) {
         this.categoryId = categoryId;
         this.name = name;
     }
@@ -40,7 +39,7 @@ public class Categories implements Serializable {
 
 //    @Override
 //    public String toString() {
-//        return "Categories{" +
+//        return "CompanyCategories{" +
 //                "categoryId='" + categoryId + '\'' +
 //                ", name='" + name + '\'' +
 //                ", items=" + items +

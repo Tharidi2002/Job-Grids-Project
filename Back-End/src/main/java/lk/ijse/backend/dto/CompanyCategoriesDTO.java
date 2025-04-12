@@ -1,13 +1,13 @@
 package lk.ijse.backend.dto;
 
-public class CategoriesDTO {
+public class CompanyCategoriesDTO {
     private int categoryId;
     private String name;
 
-    public CategoriesDTO() {
+    public CompanyCategoriesDTO() {
     }
 
-    public CategoriesDTO(int categoryId, String name) {
+    public CompanyCategoriesDTO(int categoryId, String name) {
         this.categoryId = categoryId;
         this.name = name;
     }
@@ -31,7 +31,7 @@ public class CategoriesDTO {
 
     @Override
     public String toString() {
-        return "CategoriesDTO{" +
+        return "CompanyCategoriesDTO{" +
                 "categoryId='" + categoryId + '\'' +
                 ", name='" + name + '\'' +
                 '}';

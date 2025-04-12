@@ -58,8 +58,13 @@
 
             <div class="mb-4">
                 <label class="form-label">Select Role</label>
-                <div class="role-option active" data-role="CompanyUser">
-                    <input type="radio" class="form-check-input" name="role" value="CompanyUser" checked>
+                <div class="role-option active" data-role="SystemUser">
+                    <input type="radio" class="form-check-input" name="role" value="SystemUser" checked>
+                    <label class="form-check-label fw-bold">System User</label>
+                    <p class="mb-0 text-muted">Normal System User</p>
+                </div>
+                <div class="role-option" data-role="CompanyUser">
+                    <input type="radio" class="form-check-input" name="role" value="CompanyUser">
                     <label class="form-check-label fw-bold">Company User</label>
                     <p class="mb-0 text-muted">Browse and purchase products</p>
                 </div>

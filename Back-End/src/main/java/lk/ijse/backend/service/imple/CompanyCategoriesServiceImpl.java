@@ -3,13 +3,13 @@ package lk.ijse.backend.service.imple;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lk.ijse.backend.dto.CategoriesDTO;
+import lk.ijse.backend.dto.CompanyCategoriesDTO;
 import lk.ijse.backend.dto.CategoryUpdateDTO;
-import lk.ijse.backend.entity.Categories;
+import lk.ijse.backend.entity.CompanyCategories;
 import lk.ijse.backend.entity.User;
-import lk.ijse.backend.repository.CategoriesRepo;
+import lk.ijse.backend.repository.CompanyCategoriesRepo;
 import lk.ijse.backend.repository.UserRepo;
-import lk.ijse.backend.service.CategoriesService;
+import lk.ijse.backend.service.CompanyCategoriesService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,62 +20,62 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CategoriesServiceImpl implements CategoriesService {
+public class CompanyCategoriesServiceImpl implements CompanyCategoriesService {
     @Autowired
-    private final CategoriesRepo categoriesRepo;
+    private final CompanyCategoriesRepo companyCategoriesRepo;
     @Autowired
     private final UserRepo userRepo;
     @Autowired
     private final ModelMapper modelMapper;
 
-    public CategoriesServiceImpl(CategoriesRepo categoriesRepo, UserRepo userRepo, ModelMapper modelMapper) {
-        this.categoriesRepo = categoriesRepo;
+    public CompanyCategoriesServiceImpl(CompanyCategoriesRepo companyCategoriesRepo, UserRepo userRepo, ModelMapper modelMapper) {
+        this.companyCategoriesRepo = companyCategoriesRepo;
         this.userRepo = userRepo;
         this.modelMapper = modelMapper;
     }
 
 
     @Override
-    public CategoriesDTO saveCategory(CategoriesDTO categoriesDTO) {
-        if (categoriesRepo.existsByName(categoriesDTO.getName())) {
+    public CompanyCategoriesDTO saveCategory(CompanyCategoriesDTO companyCategoriesDTO) {
+        if (companyCategoriesRepo.existsByName(companyCategoriesDTO.getName())) {
             throw new RuntimeException("Category name already exists");
         }
 
-        CategoriesDTO category = new CategoriesDTO();
-        category.setCategoryId(categoriesDTO.getCategoryId());
-        category.setName(categoriesDTO.getName());
+        CompanyCategoriesDTO category = new CompanyCategoriesDTO();
+        category.setCategoryId(companyCategoriesDTO.getCategoryId());
+        category.setName(companyCategoriesDTO.getName());
 
-        Categories savedCategory = categoriesRepo.save(modelMapper.map(category, Categories.class));
-        return modelMapper.map(savedCategory, CategoriesDTO.class);
+        CompanyCategories savedCategory = companyCategoriesRepo.save(modelMapper.map(category, CompanyCategories.class));
+        return modelMapper.map(savedCategory, CompanyCategoriesDTO.class);
     }
 
     @Override
-    public List<CategoriesDTO> getAllCategories() {
-        List<Categories> categories = categoriesRepo.findAll();
+    public List<CompanyCategoriesDTO> getAllCategories() {
+        List<CompanyCategories> categories = companyCategoriesRepo.findAll();
         return modelMapper.map(categories,
-                new TypeToken<List<CategoriesDTO>>(){}.getType());
+                new TypeToken<List<CompanyCategoriesDTO>>(){}.getType());
     }
 
     @Override
-    public CategoriesDTO updateCategory(int id, CategoryUpdateDTO updateDTO, String username) {
-        Categories category = categoriesRepo.findById(id)
+    public CompanyCategoriesDTO updateCategory(int id, CategoryUpdateDTO updateDTO, String username) {
+        CompanyCategories category = companyCategoriesRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
         if (updateDTO.getName() != null && !updateDTO.getName().isBlank()) {
-            if (categoriesRepo.existsByNameAndIdNot(updateDTO.getName(), id)) {
+            if (companyCategoriesRepo.existsByNameAndIdNot(updateDTO.getName(), id)) {
                 throw new IllegalArgumentException("Category name already exists");
             }
             category.setName(updateDTO.getName());
         }
 
         // 5. Save changes
-        Categories updatedCategory = categoriesRepo.save(category);
-        return modelMapper.map(updatedCategory, CategoriesDTO.class);
+        CompanyCategories updatedCategory = companyCategoriesRepo.save(category);
+        return modelMapper.map(updatedCategory, CompanyCategoriesDTO.class);
 
     }
 
     @Override
     public void deleteCategory(int id, String username) {
-        Categories category = categoriesRepo.findById(id)
+        CompanyCategories category = companyCategoriesRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
 
         // 2. Verify user is Admin
@@ -84,9 +84,9 @@ public class CategoriesServiceImpl implements CategoriesService {
             throw new RuntimeException("Admin not found or invalid role");
         }
 
-        categoriesRepo.deleteById(id);
+        companyCategoriesRepo.deleteById(id);
 
-        categoriesRepo.delete(category);
+        companyCategoriesRepo.delete(category);
     }
 
 

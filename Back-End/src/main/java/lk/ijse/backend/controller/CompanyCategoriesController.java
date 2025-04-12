@@ -2,10 +2,10 @@ package lk.ijse.backend.controller;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
-import lk.ijse.backend.dto.CategoriesDTO;
+import lk.ijse.backend.dto.CompanyCategoriesDTO;
 import lk.ijse.backend.dto.CategoryUpdateDTO;
 import lk.ijse.backend.dto.ResponseDTO;
-import lk.ijse.backend.service.CategoriesService;
+import lk.ijse.backend.service.CompanyCategoriesService;
 import lk.ijse.backend.util.JwtUtil;
 import lk.ijse.backend.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +20,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/categories")
 @CrossOrigin
-public class CategoriesController {
+public class CompanyCategoriesController {
     @Autowired
-    private final CategoriesService categoriesService;
+    private final CompanyCategoriesService companyCategoriesService;
     @Autowired
     private final JwtUtil jwtUtil;
 
-    public CategoriesController(CategoriesService categoriesService, JwtUtil jwtUtil) {
-        this.categoriesService = categoriesService;
+    public CompanyCategoriesController(CompanyCategoriesService companyCategoriesService, JwtUtil jwtUtil) {
+        this.companyCategoriesService = companyCategoriesService;
         this.jwtUtil = jwtUtil;
     }
 
 
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<CategoriesDTO> createCategory(@RequestBody CategoriesDTO categoryDTO) {
-        CategoriesDTO savedCategory = categoriesService.saveCategory(categoryDTO);
+    public ResponseEntity<CompanyCategoriesDTO> createCategory(@RequestBody CompanyCategoriesDTO categoryDTO) {
+        CompanyCategoriesDTO savedCategory = companyCategoriesService.saveCategory(categoryDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
     }
 
@@ -43,7 +43,7 @@ public class CategoriesController {
     @GetMapping(path = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyAuthority('ADMIN','CompanyUser')")
     public ResponseEntity<ResponseDTO> getAllCategories() {
-        List<CategoriesDTO> categories = categoriesService.getAllCategories();
+        List<CompanyCategoriesDTO> categories = companyCategoriesService.getAllCategories();
         return ResponseEntity.ok()
                 .body(new ResponseDTO(VarList.OK, "Success", categories));
     }
@@ -59,7 +59,7 @@ public class CategoriesController {
             String token = authHeader.replace("Bearer ", "");
             String username = jwtUtil.getUsernameFromToken(token);
 
-            CategoriesDTO updatedCategory = categoriesService.updateCategory(id, updateDTO, username);
+            CompanyCategoriesDTO updatedCategory = companyCategoriesService.updateCategory(id, updateDTO, username);
 
             return ResponseEntity.ok()
                     .body(new ResponseDTO(VarList.OK, "Category updated successfully", updatedCategory));
@@ -87,7 +87,7 @@ public class CategoriesController {
             String token = authHeader.replace("Bearer ", "");
             String username = jwtUtil.getUsernameFromToken(token);
 
-            categoriesService.deleteCategory(id, username);
+            companyCategoriesService.deleteCategory(id, username);
 
             return ResponseEntity.ok()
                     .body(new ResponseDTO(VarList.OK, "Category deleted successfully", null));
