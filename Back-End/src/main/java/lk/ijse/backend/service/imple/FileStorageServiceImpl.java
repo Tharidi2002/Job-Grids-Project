@@ -14,7 +14,7 @@ import java.util.UUID;
 public class FileStorageServiceImpl implements FileStorageService {
     private static final String PROFILE_IMAGE_DIRECTORY = "profileImages\\";
 
-    private static final String UPLOAD_DIRECTORY = "assets\\images\\backendImages\\";
+    private static final String UPLOAD_DIRECTORY = "\\assets\\images\\backendImages\\";
 
     private static final String DEFAULT_DIRECTORY = "F:\\IJSE\\2nd\\jboNet\\Front-End" + UPLOAD_DIRECTORY;
     private static final String USER_PROFILE_UPLOAD_DIR = DEFAULT_DIRECTORY + PROFILE_IMAGE_DIRECTORY;

@@ -49,20 +49,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
    @Autowired
    private JwtUtil jwtUtil;
-/*  example
-
-   private static final String FRONTEND_DIR = "static/images/";
-   private static final String ITEMS = "items/";
-   private static final String PROFILE = "profileImages/";
-    private static final String DEFAULT_DIRECTORY = "/home/dilini/Documents/IJSE-Institute of Software Engineering/2nd Semester/AAD/Spring/Guppy-Zone-Aquarium-Project-New/Front-End/static/";
-    private static final String DEFAULT_IMAGE_DIRECTORY = DEFAULT_DIRECTORY + "images/";
-    private static final String ITEM_UPLOAD_DIR = DEFAULT_IMAGE_DIRECTORY + ITEMS;
-    private static final String PROFILE_UPLOAD_DIR = DEFAULT_IMAGE_DIRECTORY + PROFILE;
-
-    static {
-        createIfNotExistDirectory(ITEM_UPLOAD_DIR);
-        createIfNotExistDirectory(PROFILE_UPLOAD_DIR);
-    }*/
 
 
     @Override
