@@ -55,7 +55,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ResponseUtil saveProfile(ProfileDataDTO profileDataDTO) {
-        if (profileRepo.existsByUserEmail(profileDataDTO.getEmail())) {
+        /*if (profileRepo.existsByUserEmail(profileDataDTO.getEmail())) {
             return new ResponseUtil(VarList.Bad_Request, "Profile already exists", null);
         }
 
@@ -93,13 +93,48 @@ public class ProfileServiceImpl implements ProfileService {
         responseDto.setContact(profile.getContact());
         responseDto.setImage(profile.getImage());
 
+        return new ResponseUtil(VarList.Created, "Success", responseDto);*/
+        if (profileRepo.existsByUserEmail(profileDataDTO.getEmail())) {
+            return new ResponseUtil(VarList.Bad_Request, "Profile already exists", null);
+        }
+
+        User user = userRepo.findByEmail(profileDataDTO.getEmail());
+        if (user == null) {
+            return new ResponseUtil(VarList.Not_Found, "User not found", null);
+        }
+
+        Profile profile = new Profile();
+        profile.setUser(user);
+        profile.setFirstName(profileDataDTO.getFirstName());
+        profile.setLastName(profileDataDTO.getLastName());
+        profile.setAddress(profileDataDTO.getAddress());
+        profile.setContact(profileDataDTO.getContact());
+
+        // Handle image upload
+        MultipartFile image = profileDataDTO.getImage();
+        if (image != null && !image.isEmpty()) {
+            try {
+                String imagePath = fileStorageService.storeProfileImage(image);
+                profile.setImage(imagePath);
+            } catch (Exception e) {
+                return new ResponseUtil(VarList.Internal_Server_Error, "Image upload failed", null);
+            }
+        }
+
+        profileRepo.save(profile);
+
+        // Create response DTO with joinDate
+        ProfileDTO responseDto = modelMapper.map(profile, ProfileDTO.class);
+        responseDto.setEmail(profileDataDTO.getEmail());
+        responseDto.setJoinDate(user.getJoinDate()); // Set joinDate from user
+
         return new ResponseUtil(VarList.Created, "Success", responseDto);
     }
 
 
     @Override
     public ResponseUtil updateProfile(ProfileDataDTO profileDataDTO) {
-        Profile existingProfile = profileRepo.findByUserEmail(profileDataDTO.getEmail());
+        /*Profile existingProfile = profileRepo.findByUserEmail(profileDataDTO.getEmail());
         if (existingProfile == null) {
             return new ResponseUtil(VarList.Not_Found, "Profile not found", null);
         }
@@ -129,22 +164,83 @@ public class ProfileServiceImpl implements ProfileService {
         profileRepo.save(existingProfile);
         ProfileDTO responseDto = modelMapper.map(existingProfile, ProfileDTO.class);
         responseDto.setEmail(profileDataDTO.getEmail());
+        return new ResponseUtil(VarList.OK, "Success", responseDto);*/
+
+        Profile existingProfile = profileRepo.findByUserEmail(profileDataDTO.getEmail());
+        if (existingProfile == null) {
+            return new ResponseUtil(VarList.Not_Found, "Profile not found", null);
+        }
+
+        // Update fields
+        existingProfile.setFirstName(profileDataDTO.getFirstName());
+        existingProfile.setLastName(profileDataDTO.getLastName());
+        existingProfile.setAddress(profileDataDTO.getAddress());
+        existingProfile.setContact(profileDataDTO.getContact());
+
+        // Handle image update
+        MultipartFile image = profileDataDTO.getImage();
+        if (image != null && !image.isEmpty()) {
+            try {
+                // Delete old image if exists
+                if (existingProfile.getImage() != null) {
+                    fileStorageService.deleteProfileImage(existingProfile.getImage());
+                }
+
+                String imagePath = fileStorageService.storeProfileImage(image);
+                existingProfile.setImage(imagePath);
+            } catch (Exception e) {
+                return new ResponseUtil(VarList.Internal_Server_Error, "Image upload failed", null);
+            }
+        }
+
+        profileRepo.save(existingProfile);
+
+        // Get user to include joinDate in response
+        User user = userRepo.findByEmail(profileDataDTO.getEmail());
+        ProfileDTO responseDto = modelMapper.map(existingProfile, ProfileDTO.class);
+        responseDto.setEmail(profileDataDTO.getEmail());
+        responseDto.setJoinDate(user.getJoinDate()); // Set joinDate from user
+
         return new ResponseUtil(VarList.OK, "Success", responseDto);
     }
 
     @Override
     public ResponseUtil getProfileByEmail(String email) {
-        Profile profile = profileRepo.findByUserEmail(email);
+        /*Profile profile = profileRepo.findByUserEmail(email);
         if (profile == null) {
             return new ResponseUtil(VarList.Not_Found, "Profile not found", null);
         }
         ProfileDTO profileDTO = modelMapper.map(profile, ProfileDTO.class);
         profileDTO.setEmail(email);
+        return new ResponseUtil(VarList.OK, "Success", profileDTO);*/
+        Profile profile = profileRepo.findByUserEmail(email);
+        if (profile == null) {
+            return new ResponseUtil(VarList.Not_Found, "Profile not found", null);
+        }
+
+        // Get user to include joinDate in response
+        User user = userRepo.findByEmail(email);
+        ProfileDTO profileDTO = modelMapper.map(profile, ProfileDTO.class);
+        profileDTO.setEmail(email);
+        profileDTO.setJoinDate(user.getJoinDate()); // Set joinDate from user
+
         return new ResponseUtil(VarList.OK, "Success", profileDTO);
     }
 
     @Override
     public ResponseUtil deleteProfile(String email) {
+        /*Profile profile = profileRepo.findByUserEmail(email);
+        if (profile == null) {
+            return new ResponseUtil(VarList.Not_Found, "Profile not found", null);
+        }
+
+        // Delete associated image
+        if (profile.getImage() != null) {
+            fileStorageService.deleteProfileImage(profile.getImage());
+        }
+
+        profileRepo.delete(profile);
+        return new ResponseUtil(VarList.OK, "Success", null);*/
         Profile profile = profileRepo.findByUserEmail(email);
         if (profile == null) {
             return new ResponseUtil(VarList.Not_Found, "Profile not found", null);

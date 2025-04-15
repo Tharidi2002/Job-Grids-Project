@@ -1,10 +1,14 @@
 package lk.ijse.backend.dto.formDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -15,17 +19,16 @@ public class ProfileDTO {
     @Email(message = "Invalid Format")
     private String email;
     private String image;
-
-    // Remove the 'name' field and use separate first/last name fields
     private String firstName;
     private String lastName;
 
-    @Size(min = 5,max = 30,message = "Name min length is 5")
+    @Size(min = 5, max = 30, message = "Address must be between 5-30 characters")
     private String address;
 
-    @Pattern(regexp = "^[0-9]{10}$",message = "Phone number must be 10 digits")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
     private String contact;
 
-    private String joinDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate joinDate;
 
 }

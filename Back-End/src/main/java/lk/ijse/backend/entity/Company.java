@@ -25,8 +25,9 @@ public class Company implements Serializable {
     private String Logo;
     private String Website;
     private String Email;
-    private String Phone;
+    private String Contact;
     private String FacebookUrl;
+    private String WebsiteUrl;
 
     @ManyToOne
     private CompanyCategories CompanyCategory;
