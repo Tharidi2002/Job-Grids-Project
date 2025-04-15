@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
    @Autowired
    private JwtUtil jwtUtil;
+/*  example
 
    private static final String FRONTEND_DIR = "static/images/";
    private static final String ITEMS = "items/";
@@ -61,10 +62,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     static {
         createIfNotExistDirectory(ITEM_UPLOAD_DIR);
         createIfNotExistDirectory(PROFILE_UPLOAD_DIR);
-    }
-
-
-
+    }*/
 
 
     @Override
@@ -91,18 +89,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        User user = userRepository.findByEmail(email);
-//        System.out.println("user = " + user);
-//
-//        return new org.springframework.security.core.userdetails.User(
-//                user.getEmail(),
-//                user.getPassword(),
-//                new ArrayList<>()
-//        );
-//    }
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);
@@ -111,17 +97,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             throw new UsernameNotFoundException("User not found for email: " + email);
         }
 
-//        // Convert String role to GrantedAuthority
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//
-//        if (user.getRole() != null && !user.getRole().isEmpty()) {
-//            // If role is stored as "ROLE_SELLER", remove "ROLE_" prefix
-//            String authority = user.getRole().startsWith("ROLE_")
-//                    ? user.getRole().substring(5)  // Removes "ROLE_"
-//                    : user.getRole();
-//
-//            authorities.add(new SimpleGrantedAuthority(authority));
-//        }
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
@@ -134,10 +109,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         User user = userRepository.findByEmail(username);
         return modelMapper.map(user,UserDTO.class);
     }
-//    public ProfileDTO loadProfileDetailsByUsername(String username) throws UsernameNotFoundException {
-//        User user = userRepository.findByEmail(username);
-//        return modelMapper.map(user,ProfileDTO.class);
-//    }
 
 
 

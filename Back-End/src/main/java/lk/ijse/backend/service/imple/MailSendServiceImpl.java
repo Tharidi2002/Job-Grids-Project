@@ -35,8 +35,8 @@ public class MailSendServiceImpl {
         return String.format("""
         <html>
           <body style="font-family: sans-serif;">
-            <h2>Welcome to Our App!</h2>
-            <p>Hi <strong>%s</strong>,</p>
+            <h2>Welcome to  Job - Grids Online Job Portal Website!</h2>
+            <p>Hello, <strong>%s</strong>,</p>
             <p>Thank you for registering with us. Your account has been successfully created.</p>
             <p><strong>Registration Date & Time:</strong> %s</p>
             <hr>

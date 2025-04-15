@@ -63,39 +63,10 @@ public class UserController {
         }
     }
 
-
-//
-//    @PutMapping("/update")
-//    public ResponseEntity<ProfileDTO> updateProfile(
-//            @RequestHeader("Authorization") String token,
-//            @ModelAttribute ProfileDataDTO profileDataDTO) {
-//
-//        // Extract email from JWT token
-//        String email = jwtUtil.extractEmailFromToken(token.substring(7));
-//
-//        // Update profile
-//        ProfileDTO updatedProfile = userService.updateUserProfile(email, profileDataDTO);
-//
-//        return ResponseEntity.ok(updatedProfile);
-//    }
     @GetMapping("/get")
     public String getUserProfile(HttpServletRequest request) {
         String token = request.getHeader("Authorization").substring(7); // Remove "Bearer " prefix
         String username = JwtUtil.JWT_TOKEN_VALIDITY + jwtUtil.getUsernameFromToken(token);
         return "User Email: " + username;
     }
-
-//    @PutMapping("/update")
-//    public ResponseEntity<ProfileDTO> updateProfile(@RequestHeader("Authorization") String token,
-//                                                     @ModelAttribute ProfileDataDTO profileDataDTO) {
-//
-//        // Extract email from JWT token
-//        String email = jwtUtil.getUsernameFromToken(token.substring(7));
-//
-//        // Update profile
-//        ProfileDTO updatedProfile = userService.updateUserProfile(email, profileDataDTO);
-//        return ResponseEntity.ok(updatedProfile);
-//    }
-
-
 }
