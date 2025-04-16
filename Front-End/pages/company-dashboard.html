@@ -2,9 +2,415 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .logo-container {
+            width: 150px;
+            height: 150px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 2px solid #ddd;
+            position: relative;
+        }
+        .logo-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .logo-upload-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 <body>
-<h1>Company Dashboard</h1>
+<div class="container">
+    <div class="form-container bg-white">
+        <h2 class="text-center mb-4">Company Management</h2>
+
+        <!-- Company Logo Upload -->
+        <div class="logo-container">
+            <img id="logoPreview" src="https://via.placeholder.com/150" class="logo-preview" alt="Company Logo">
+            <button class="logo-upload-btn" onclick="document.getElementById('logoUpload').click()">
+                <i class="fas fa-upload"></i> Upload
+            </button>
+            <input type="file" id="logoUpload" accept="image/*" style="display: none;">
+        </div>
+
+        <!-- Company Form -->
+        <form id="companyForm">
+            <input type="hidden" id="userEmail" name="userEmail">
+
+            <div class="mb-3">
+                <label for="companyName" class="form-label">Company Name *</label>
+                <input type="text" class="form-control" id="companyName" name="companyName" required>
+                <div class="invalid-feedback">Please provide a company name.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="location" class="form-label">Location *</label>
+                <input type="text" class="form-control" id="location" name="location" required>
+                <div class="invalid-feedback">Please provide a location.</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email *</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                    <div class="invalid-feedback">Please provide a valid email.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="contact" class="form-label">Contact Number *</label>
+                    <input type="tel" class="form-control" id="contact" name="contact" pattern="[0-9]{10}" required>
+                    <div class="invalid-feedback">Please provide a 10-digit phone number.</div>
+                </div>
+            </div>
+
+            <!--<div class="mb-3">
+                <label for="companyCategoryId" class="form-label">Company Category *</label>
+                <select class="form-select" id="companyCategoryId" name="companyCategoryId" required>
+                    <option value="" selected disabled>Select Category</option>
+                    &lt;!&ndash; Categories will be loaded via AJAX &ndash;&gt;
+                </select>
+                <div class="invalid-feedback">Please select a category.</div>
+            </div>-->
+            <div class="mb-3">
+                <label for="companyCategoryId" class="form-label">Company Category *</label>
+                <select class="form-select" id="companyCategoryId" name="companyCategoryId" required>
+                    <option value="" selected disabled>Select Category</option>
+                    <!-- Categories will be loaded via AJAX -->
+                </select>
+                <div class="invalid-feedback">Please select a category.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="facebookUrl" class="form-label">Facebook URL</label>
+                <input type="url" class="form-control" id="facebookUrl" name="facebookUrl">
+            </div>
+
+            <div class="mb-3">
+                <label for="websiteUrl" class="form-label">Website URL</label>
+                <input type="url" class="form-control" id="websiteUrl" name="websiteUrl">
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                <button type="button" class="btn btn-danger me-md-2" id="deleteBtn">Delete Company</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">Save Company</button>
+            </div>
+        </form>
+
+        <!-- Status Alert -->
+        <div id="statusAlert" class="alert mt-3" style="display: none;"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!--<script>
+    $(document).ready(function() {
+        // Load company data if exists
+        const userEmail = getUserEmailFromToken(); // Implement this function to get email from JWT
+        $('#userEmail').val(userEmail);
+        loadCompany(userEmail);
+        loadCategories();
+
+        // Logo upload preview
+        $('#logoUpload').change(function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    $('#logoPreview').attr('src', event.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form submission
+        $('#companyForm').submit(function(e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('companyName', $('#companyName').val());
+            formData.append('location', $('#location').val());
+            formData.append('email', $('#email').val());
+            formData.append('contact', $('#contact').val());
+            formData.append('facebookUrl', $('#facebookUrl').val());
+            formData.append('websiteUrl', $('#websiteUrl').val());
+            formData.append('companyCategoryId', $('#companyCategoryId').val());
+            formData.append('userEmail', $('#userEmail').val());
+
+            const logoFile = $('#logoUpload')[0].files[0];
+            if (logoFile) {
+                formData.append('logo', logoFile);
+            }
+
+            // Check if company exists to determine update or create
+            $.ajax({
+                url: '/api/v1/company/' + userEmail,
+                type: 'GET',
+                success: function(response) {
+                    if (response.code === 200) {
+                        // Company exists - update
+                        updateCompany(formData);
+                    } else {
+                        // Company doesn't exist - create
+                        saveCompany(formData);
+                    }
+                },
+                error: function(xhr) {
+                    showAlert('Error checking company status', 'danger');
+                }
+            });
+        });
+
+        // Delete company
+        $('#deleteBtn').click(function() {
+            if (confirm('Are you sure you want to delete your company profile?')) {
+                deleteCompany(userEmail);
+            }
+        });
+    });
+
+    function loadCompany(email) {
+        $.ajax({
+            url: '/api/v1/company/' + email,
+            type: 'GET',
+            success: function(response) {
+                if (response.code === 200) {
+                    const company = response.data;
+                    $('#companyName').val(company.companyName);
+                    $('#location').val(company.location);
+                    $('#email').val(company.email);
+                    $('#contact').val(company.contact);
+                    $('#facebookUrl').val(company.facebookUrl);
+                    $('#websiteUrl').val(company.websiteUrl);
+                    setSelectedCategory(company.companyCategoryId);
+
+                    if (company.logo) {
+                        $('#logoPreview').attr('src', company.logo);
+                    }
+                }
+            },
+            error: function(xhr) {
+                console.log('Company not found or error loading');
+            }
+        });
+    }
+
+    // Helper function to get email from JWT token
+    function getUserEmailFromToken() {
+        const token = localStorage.getItem('token');
+        if (!token) return null;
+
+        // Simple JWT parsing (for demo - use proper JWT library in production)
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.sub; // Assuming email is in the 'sub' claim
+    }
+</script>-->
+<script>
+    $(document).ready(function() {
+        // Load company data if exists
+        const userEmail = getUserEmailFromToken(); // Implement this function to get email from JWT
+        $('#userEmail').val(userEmail);
+        loadCompany(userEmail);
+        loadCategories();
+
+        // Logo upload preview
+        $('#logoUpload').change(function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    $('#logoPreview').attr('src', event.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form submission
+        $('#companyForm').submit(function(e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('companyName', $('#companyName').val());
+            formData.append('location', $('#location').val());
+            formData.append('email', $('#email').val());
+            formData.append('contact', $('#contact').val());
+            formData.append('facebookUrl', $('#facebookUrl').val());
+            formData.append('websiteUrl', $('#websiteUrl').val());
+            formData.append('companyCategoryId', $('#companyCategoryId').val());
+            formData.append('userEmail', $('#userEmail').val());
+
+            const logoFile = $('#logoUpload')[0].files[0];
+            if (logoFile) {
+                formData.append('logo', logoFile);
+            }
+
+            // Check if company exists to determine update or create
+            $.ajax({
+                url: '/api/v1/company/' + userEmail,
+                type: 'GET',
+                success: function(response) {
+                    if (response.code === 200) {
+                        // Company exists - update
+                        updateCompany(formData);
+                    } else {
+                        // Company doesn't exist - create
+                        saveCompany(formData);
+                    }
+                },
+                error: function(xhr) {
+                    showAlert('Error checking company status', 'danger');
+                }
+            });
+        });
+
+        // Delete company
+        $('#deleteBtn').click(function() {
+            if (confirm('Are you sure you want to delete your company profile?')) {
+                deleteCompany(userEmail);
+            }
+        });
+    });
+
+    function loadCompany(email) {
+        $.ajax({
+            url: '/api/v1/company/' + email,
+            type: 'GET',
+            success: function(response) {
+                if (response.code === 200) {
+                    const company = response.data;
+                    $('#companyName').val(company.companyName);
+                    $('#location').val(company.location);
+                    $('#email').val(company.email);
+                    $('#contact').val(company.contact);
+                    $('#facebookUrl').val(company.facebookUrl);
+                    $('#websiteUrl').val(company.websiteUrl);
+                    $('#companyCategoryId').val(company.companyCategoryId);
+
+                    if (company.logo) {
+                        $('#logoPreview').attr('src', company.logo);
+                    }
+                }
+            },
+            error: function(xhr) {
+                console.log('Company not found or error loading');
+            }
+        });
+    }
+
+    // Load categories when page loads
+    function loadCategories() {
+        $.ajax({
+            url: '/api/v1/categories/get',
+            type: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token') // Assuming you store JWT token
+            },
+            success: function(response) {
+                if (response.code === 200) {
+                    const categories = response.data;
+                    const select = $('#companyCategoryId');
+                    select.empty();
+                    select.append('<option value="" selected disabled>Select Category</option>');
+
+                    categories.forEach(category => {
+                        select.append(`<option value="${category.categoryId}">${category.name}</option>`);
+                    });
+                }
+            },
+            error: function(xhr) {
+                console.error('Error loading categories:', xhr.responseText);
+                showAlert('Error loading categories', 'danger');
+            }
+        });
+    }
+
+    // Call this when loading company data
+    function setSelectedCategory(categoryId) {
+        $('#companyCategoryId').val(categoryId);
+    }
+
+    function saveCompany(formData) {
+        $.ajax({
+            url: '/api/v1/company',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                showAlert('Company profile created successfully!', 'success');
+            },
+            error: function(xhr) {
+                showAlert('Error creating company: ' + xhr.responseJSON.message, 'danger');
+            }
+        });
+    }
+
+    function updateCompany(formData) {
+        $.ajax({
+            url: '/api/v1/company',
+            type: 'PUT',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                showAlert('Company profile updated successfully!', 'success');
+            },
+            error: function(xhr) {
+                showAlert('Error updating company: ' + xhr.responseJSON.message, 'danger');
+            }
+        });
+    }
+
+    function deleteCompany(email) {
+        $.ajax({
+            url: '/api/v1/company/' + email,
+            type: 'DELETE',
+            success: function(response) {
+                showAlert('Company profile deleted successfully!', 'success');
+                // Reset form
+                $('#companyForm')[0].reset();
+                $('#logoPreview').attr('src', 'https://via.placeholder.com/150');
+                $('#companyCategoryId').val('');
+            },
+            error: function(xhr) {
+                showAlert('Error deleting company: ' + xhr.responseJSON.message, 'danger');
+            }
+        });
+    }
+
+    function showAlert(message, type) {
+        const alert = $('#statusAlert');
+        alert.removeClass('alert-success alert-danger alert-warning');
+        alert.addClass('alert-' + type);
+        alert.text(message);
+        alert.fadeIn();
+
+        setTimeout(function() {
+            alert.fadeOut();
+        }, 5000);
+    }
+</script>
 </body>
 </html>

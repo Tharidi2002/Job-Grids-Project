@@ -1,4 +1,3 @@
-/*
 package lk.ijse.backend.entity;
 
 
@@ -35,4 +34,3 @@ public class Company implements Serializable {
     @OneToOne
     private User user;
 }
-*/
