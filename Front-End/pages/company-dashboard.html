@@ -4,8 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Management</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../template/assets/images/favicon.svg" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Web Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <!-- ========================= CSS here ========================= -->
+    <link rel="stylesheet" href="../template/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../template/assets/css/LineIcons.2.0.css" />
+    <link rel="stylesheet" href="../template/assets/css/animate.css" />
+    <link rel="stylesheet" href="../template/assets/css/tiny-slider.css" />
+    <link rel="stylesheet" href="../template/assets/css/glightbox.min.css" />
+    <link rel="stylesheet" href="../template/assets/css/main.css" />
+
+
     <style>
         .logo-container {
             width: 150px;
@@ -42,6 +56,106 @@
     </style>
 </head>
 <body>
+
+<!-- Start Header Area -->
+<header class="header">
+    <div class="navbar-area">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <nav class="navbar navbar-expand-lg">
+                        <a class="navbar-brand logo" href="company-dashboard.html">
+                            <img class="logo1" src="../template/assets/images/logo/logo.svg" alt="Logo" />
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                            <ul id="nav" class="navbar-nav ml-auto">
+                                <li class="nav-item">
+                                    <a class="active" href="company-dashboard.html">Home</a>
+                                </li>
+                                <li class="nav-item"><a href="#">Pages</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="#">Profile</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item"><a href="#">Candidates</a></li>
+                                <li class="nav-item"><a href="#">Employers </a></li>
+                                <li class="nav-item"><a href="#">Blog</a></li>
+                                <li class="nav-item"><a href="#">Contact</a></li>
+                            </ul>
+                        </div>
+                        <!-- navbar collapse -->
+
+                        <div class="button">
+                            <a href="../index.html"  data-target="#signup" class="btn">Log Out</a>
+                        </div>
+
+                        <!--                            POP UP Window login register-->
+                        <!--<div class="button">
+                            <a href="javacript:" data-toggle="modal" data-target="#login" class="login"><i
+                                    class="lni lni-lock-alt"></i> Login</a>
+                            <a href="javacript:" data-toggle="modal" data-target="#signup" class="btn">Sign Up</a>
+                        </div>-->
+                    </nav>
+                    <!-- navbar -->
+                </div>
+            </div>
+            <!-- row -->
+        </div>
+        <!-- container -->
+    </div>
+    <!-- navbar area -->
+</header>
+<!-- End Header Area -->
+
+<!-- Start Hero Area -->
+<section class="hero-area">
+    <!-- Single Slider -->
+    <div class="hero-inner">
+        <div class="container">
+            <div class="row ">
+                <div class="col-lg-6 co-5">
+                    <div class="inner-content">
+                        <div class="hero-text">
+                            <h1 class="wow fadeInUp" data-wow-delay=".3s">Find Your Career <br>to Make a Better Life
+                            </h1>
+                            <p class="wow fadeInUp" data-wow-delay=".5s">Creating a beautiful job website is not
+                                easy <br> always. To make your life easier, we are<br> introducing Jobcamp template.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 co-12">
+                    <div class="hero-video-head wow fadeInRight" data-wow-delay=".5s">
+                        <div class="video-inner">
+                            <img src="../template/assets/images/hero/hero-image.png" alt="#">
+                            <a href="FAQ-Chatbot.html" class="glightbox hero-video"><i
+                                    class="lni lni-android"></i></a>
+                            <!-- Video Animation -->
+                            <div class="promo-video">
+                                <div class="waves-block">
+                                    <div class="waves wave-1"></div>
+                                    <div class="waves wave-2"></div>
+                                    <div class="waves wave-3"></div>
+                                </div>
+                            </div>
+                            <!--/ End Video Animation -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ End Single Slider -->
+</section>
+<!--/ End Hero Area -->
+
 <div class="container">
     <div class="form-container bg-white">
         <h2 class="text-center mb-4">Company Management</h2>
@@ -121,6 +235,109 @@
         <div id="statusAlert" class="alert mt-3" style="display: none;"></div>
     </div>
 </div>
+
+<!-- Start Pricing Table Area -->
+<section class="pricing-table section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <span class="wow fadeInDown" data-wow-delay=".2s">Pricing Table</span>
+                    <h2 class="wow fadeInUp" data-wow-delay=".4s">Our Pricing Plan</h2>
+                    <p class="wow fadeInUp" data-wow-delay=".6s">There are many variations of passages of Lorem
+                        Ipsum available, but the majority have suffered alteration in some form.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-12">
+                <!-- Single Table -->
+                <div class="single-table wow fadeInUp" data-wow-delay=".2s">
+                    <!-- Table Head -->
+                    <div class="table-head">
+                        <h4 class="title">BASIC PACK</h4>
+                        <div class="price">
+                            <p class="amount">$15<span class="duration">3 month</span></p>
+                        </div>
+                    </div>
+                    <!-- End Table Head -->
+                    <!-- Table List -->
+                    <ul class="table-list">
+                        <li>5+ Listings</li>
+                        <li>Contact With Agent</li>
+                        <li>Contact With Agent</li>
+                        <li>7×24 Fully Support</li>
+                        <li>50GB Space</li>
+                    </ul>
+                    <!-- End Table List -->
+                    <!-- Table Bottom -->
+                    <div class="button">
+                        <a class="btn" href="#">Register Now</a>
+                    </div>
+                    <!-- End Table Bottom -->
+                </div>
+                <!-- End Single Table-->
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+                <!-- Single Table -->
+                <div class="single-table wow fadeInUp" data-wow-delay=".4s">
+                    <!-- Table Head -->
+                    <div class="table-head">
+                        <h4 class="title">STANDARD PACK</h4>
+                        <div class="price">
+                            <p class="amount">$12<span class="duration">6 month</span></p>
+                        </div>
+                    </div>
+                    <!-- End Table Head -->
+                    <!-- Table List -->
+                    <ul class="table-list">
+                        <li>5+ Listings</li>
+                        <li>Contact With Agent</li>
+                        <li>Contact With Agent</li>
+                        <li>7×24 Fully Support</li>
+                        <li>50GB Space</li>
+                    </ul>
+                    <!-- End Table List -->
+                    <!-- Table Bottom -->
+                    <div class="button">
+                        <a class="btn" href="#">Register Now</a>
+                    </div>
+                    <!-- End Table Bottom -->
+                </div>
+                <!-- End Single Table-->
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+                <!-- Single Table -->
+                <div class="single-table wow fadeInUp" data-wow-delay=".6s">
+                    <!-- Table Head -->
+                    <div class="table-head">
+                        <h4 class="title">PREMIUM PACK</h4>
+                        <div class="price">
+                            <p class="amount">$10<span class="duration">1 year</span></p>
+                        </div>
+                    </div>
+                    <!-- End Table Head -->
+                    <!-- Table List -->
+                    <ul class="table-list">
+                        <li>5+ Listings</li>
+                        <li>Contact With Agent</li>
+                        <li>Contact With Agent</li>
+                        <li>7×24 Fully Support</li>
+                        <li>50GB Space</li>
+                    </ul>
+                    <!-- End Table List -->
+                    <!-- Table Bottom -->
+                    <div class="button">
+                        <a class="btn" href="#">Register Now</a>
+                    </div>
+                    <!-- End Table Bottom -->
+                </div>
+                <!-- End Single Table-->
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ End Pricing Table Area -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
