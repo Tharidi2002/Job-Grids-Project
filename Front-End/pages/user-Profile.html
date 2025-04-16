@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Management</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .profile-image-container {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 3px solid #ddd;
+            position: relative;
+        }
+        .profile-image-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .image-upload-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="form-container bg-white">
+        <h2 class="text-center mb-4">Profile Management</h2>
+
+        <!-- Profile Image Upload -->
+        <div class="profile-image-container">
+            <img id="profileImagePreview" src="https://via.placeholder.com/150" class="profile-image-preview" alt="Profile Image">
+            <button class="image-upload-btn" onclick="document.getElementById('imageUpload').click()">
+                <i class="fas fa-camera"></i>
+            </button>
+            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+        </div>
+
+        <!-- Profile Form -->
+        <form id="profileForm">
+            <input type="hidden" id="email" name="email">
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                    <div class="invalid-feedback">Please provide a first name.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                    <div class="invalid-feedback">Please provide a last name.</div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <textarea class="form-control" id="address" name="address" rows="2" required></textarea>
+                <div class="invalid-feedback">Please provide an address (5-30 characters).</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="contact" class="form-label">Contact Number</label>
+                <input type="tel" class="form-control" id="contact" name="contact" pattern="[0-9]{10}" required>
+                <div class="invalid-feedback">Please provide a valid 10-digit phone number.</div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                <button type="button" class="btn btn-danger me-md-2" id="deleteBtn">Delete Profile</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">Save Profile</button>
+            </div>
+        </form>
+
+        <!-- Status Alert -->
+        <div id="statusAlert" class="alert mt-3" style="display: none;"></div>
+    </div>
+</div>
+
+<!-- Bootstrap 5 JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Load profile data if exists
+        const userEmail = "tharidithisarani59@gmail.com"; // Replace with actual logged-in user email
+        $('#email').val(userEmail);
+        loadProfile(userEmail);
+
+        // Image upload preview
+        $('#imageUpload').change(function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    $('#profileImagePreview').attr('src', event.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form submission
+        $('#profileForm').submit(function(e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('email', $('#email').val());
+            formData.append('firstName', $('#firstName').val());
+            formData.append('lastName', $('#lastName').val());
+            formData.append('address', $('#address').val());
+            formData.append('contact', $('#contact').val());
+
+            const imageFile = $('#imageUpload')[0].files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+
+            // Check if profile exists to determine update or create
+            $.ajax({
+                url: '/api/v1/profile/' + userEmail,
+                type: 'GET',
+                success: function(response) {
+                    if (response.code === 200) {
+                        // Profile exists - update
+                        updateProfile(formData);
+                    } else {
+                        // Profile doesn't exist - create
+                        saveProfile(formData);
+                    }
+                },
+                error: function(xhr) {
+                    showAlert('Error checking profile status', 'danger');
+                }
+            });
+        });
+
+        // Delete profile
+        $('#deleteBtn').click(function() {
+            if (confirm('Are you sure you want to delete your profile?')) {
+                deleteProfile(userEmail);
+            }
+        });
+    });
+
+    function loadProfile(email) {
+        $.ajax({
+            url: '/api/v1/profile/' + email,
+            type: 'GET',
+            success: function(response) {
+                if (response.code === 200) {
+                    const profile = response.data;
+                    $('#firstName').val(profile.firstName);
+                    $('#lastName').val(profile.lastName);
+                    $('#address').val(profile.address);
+                    $('#contact').val(profile.contact);
+
+                    if (profile.image) {
+                        $('#profileImagePreview').attr('src', profile.image);
+                    }
+                }
+            },
+            error: function(xhr) {
+                console.log('Profile not found or error loading');
+            }
+        });
+    }
+
+    function saveProfile(formData) {
+        $.ajax({
+            url: '/api/v1/profile',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                showAlert('Profile created successfully!', 'success');
+            },
+            error: function(xhr) {
+                showAlert('Error creating profile: ' + xhr.responseJSON.message, 'danger');
+            }
+        });
+    }
+
+    function updateProfile(formData) {
+        $.ajax({
+            url: '/api/v1/profile',
+            type: 'PUT',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                showAlert('Profile updated successfully!', 'success');
+            },
+            error: function(xhr) {
+                showAlert('Error updating profile: ' + xhr.responseJSON.message, 'danger');
+            }
+        });
+    }
+
+    function deleteProfile(email) {
+        $.ajax({
+            url: '/api/v1/profile/' + email,
+            type: 'DELETE',
+            success: function(response) {
+                showAlert('Profile deleted successfully!', 'success');
+                // Reset form
+                $('#profileForm')[0].reset();
+                $('#profileImagePreview').attr('src', 'https://via.placeholder.com/150');
+            },
+            error: function(xhr) {
+                showAlert('Error deleting profile: ' + xhr.responseJSON.message, 'danger');
+            }
+        });
+    }
+
+    function showAlert(message, type) {
+        const alert = $('#statusAlert');
+        alert.removeClass('alert-success alert-danger alert-warning');
+        alert.addClass('alert-' + type);
+        alert.text(message);
+        alert.fadeIn();
+
+        setTimeout(function() {
+            alert.fadeOut();
+        }, 5000);
+    }
+</script>
+</body>
+</html>
