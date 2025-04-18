@@ -10,18 +10,6 @@ Admins to manage users, FAQs, and system configurations.
 
 🔗 YouTube Demo: Watch Video (Replace with your actual link)
 
-📸 Screenshots
-1. Home Page
-Home Page
-
-2. Job Search
-Job Search
-
-3. Company Dashboard
-Company Dashboard
-
-4. Admin Panel
-Admin Panel
 
 🛠 Technologies & Dependencies
 Backend (Java - Spring Boot)
