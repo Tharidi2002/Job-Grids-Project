@@ -8,7 +8,8 @@ Companies to post job vacancies, review applications, and manage hiring processe
 
 Admins to manage users, FAQs, and system configurations.
 
-🔗 YouTube Demo: Watch Video (Replace with your actual link)
+🔗 Fill GitHub code: https://github.com/Tharidi2002/Job-Grids-Project-master-new-update.git
+🔗 YouTube Demo: Watch Video (https://youtu.be/IgtbjvjvGEw?si=z5K-9UuUtyJc6RAJ)
 
 
 🛠 Technologies & Dependencies
